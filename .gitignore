@@ -18,3 +18,7 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
+
+# Python
+*.pyc
+__pycache__
