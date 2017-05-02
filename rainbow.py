@@ -36,9 +36,14 @@ class Rainbow:
         greenDistance = cls.__get_polar_distance_on_unit_circle(cls.GREEN_SOURCE_LOCATION, location)
         blueDistance = cls.__get_polar_distance_on_unit_circle(cls.BLUE_SOURCE_LOCATION, location)
 
-        return (int((cls.MAX_DISTANCE - redDistance) * 255),
-                int((cls.MAX_DISTANCE - greenDistance) * 255),
-                int((cls.MAX_DISTANCE - blueDistance) * 255))
+        return ((int((cls.MAX_DISTANCE - redDistance) * 255) % 256),
+                (int((cls.MAX_DISTANCE - greenDistance) * 255) % 256),
+                (int((cls.MAX_DISTANCE - blueDistance) * 255) % 256))
+
+#        return (int(redDistance * 255),
+#                int(greenDistance * 255),
+#                int(blueDistance * 255))
+
 
     @classmethod
     def __get_polar_distance_on_unit_circle(cls, radians1, radians2):
