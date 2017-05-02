@@ -36,6 +36,7 @@ class SimpleImage:
         return result
 
     def set_pixel(self, x, y, red, green, blue, alpha = 255):
+        self.__validate_user_color(red, green, blue, alpha)
         pixel_index = self.__get_pixel_index(x, y)
         existing_sparse_offset = (None if self.__is_sparse else self.__find_sparse_pixel(pixel_index))
         image_offset = pixel_index
@@ -46,6 +47,7 @@ class SimpleImage:
                 image_offset = existing_sparse_offset
 
         color_offset = 1 if self.__is_sparse else 0
+
         color = red + (green << 8) + (blue << 16) + (alpha << 24)
 
         if self.__is_sparse and existing_sparse_offset == None:
@@ -66,9 +68,9 @@ class SimpleImage:
 
     def __get_pixel_index(self, x, y):
         if x < 0 or x >= self.__width:
-            raise ValueError("set_pixel: x coordinate value `{0}` not in the range 0 to {1}".format(x, self.__width - 1))
+            raise ValueError("get_pixel: x coordinate value `{0}` not in the range 0 to {1}".format(x, self.__width - 1))
         if y < 0 or y >= self.__height:
-            raise ValueError("set_pixel: y coordinate value `{0}` not in the range 0 to {1}".format(y, self.__height - 1))
+            raise ValueError("get_pixel: y coordinate value `{0}` not in the range 0 to {1}".format(y, self.__height - 1))
         return y * self.__width + x
 
     def __new_sparse_pixel_offset(self):
@@ -82,11 +84,17 @@ class SimpleImage:
         self.__sparse_size += 1
 
     def __find_sparse_pixel(self, pixel_index):
-        result = self.__sparse_map[pixel_index] if self.__sparse_map.has_key(pixel_index) else None
+        result = self.__sparse_map[pixel_index] if pixel_index in self.__sparse_map else None
         return result
 
     def __validate_color(self, x, y, color):
         newcolor = self.get_pixel(x, y)
         if newcolor != color:
             raise ValueError("At #{0},#{1} the color should be #{2}, but #{3} was returned".format(x, y, color, newcolor))
+
+    def __validate_user_color(self, red, green, blue, alpha):
+        color = {'red': red, 'green': green, 'blue': blue, 'alpha': alpha}
+        for component, value in color.items():
+            if (not type(value) is int) or (value < 0 or value > 255):
+                raise ValueError("Color component {0}='{1}' is not an 8-bit integer".format(component, value))
 
