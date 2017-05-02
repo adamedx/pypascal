@@ -18,6 +18,7 @@
 
 import json
 import bson
+from PIL import Image
 
 class ImageWriter:
 
@@ -37,4 +38,23 @@ class ImageWriter:
         javascript_start = "var imageJSON = `" if javascript else ""
         javascript_end = "`" if javascript else ""
         return "{0}{1}{2}".format(javascript_start, image_json, javascript_end)
+
+    @classmethod
+    def write_png_file(cls, image, png_file_path):
+        image_information = image.get_serializable_image()
+        columns = image_information['width']
+        rows = image_information['height']
+        byte_data_rgba = bytearray()
+        for row in range(0, rows):
+            for column in range(0, columns):
+                pixel_value_argb = image.get_pixel(column, row)
+                # Append bytes in the expected RGBA order
+                byte_data_rgba.append((pixel_value_argb & 0x00ff0000) >> 16) # red
+                byte_data_rgba.append((pixel_value_argb & 0x0000ff00) >> 8)  # green
+                byte_data_rgba.append((pixel_value_argb & 0x000000ff) >> 0)  # blue
+                byte_data_rgba.append((pixel_value_argb & 0xff000000) >> 24) # alpha
+
+        image_data = Image.frombytes("RGBA", (columns, rows), bytes(byte_data_rgba))
+        image_data.save(png_file_path, 'PNG')
+
 

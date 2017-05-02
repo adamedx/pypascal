@@ -26,7 +26,7 @@ class Pascal:
         last_row = self.max_row if target_row == None else target_row
         for row in range(0, last_row + 1):
             for item in self.triangle[row]:
-                print str(item) + " ",
+                print(str(item) + " ", end='')
             print('')
 
     def generate(self, modulus):
