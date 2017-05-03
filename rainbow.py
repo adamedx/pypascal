@@ -40,11 +40,6 @@ class Rainbow:
                 (int((cls.MAX_DISTANCE - greenDistance) * 255) % 256),
                 (int((cls.MAX_DISTANCE - blueDistance) * 255) % 256))
 
-#        return (int(redDistance * 255),
-#                int(greenDistance * 255),
-#                int(blueDistance * 255))
-
-
     @classmethod
     def __get_polar_distance_on_unit_circle(cls, radians1, radians2):
         # Distance in polar coordinates is
