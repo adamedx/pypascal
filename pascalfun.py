@@ -73,7 +73,7 @@ class PascalFun:
 @click.option('--modulus', default=2, help='Modulus with which to scale elements of Pascal\'s triangle (default 2)')
 @click.option('--background-argb-hex-color', default='0x00000000', help='Background color in ARGB hexadecimal format to which all pixels are initialized')
 @click.option('--output-path', default='', help='Send output to the specified path')
-@click.option('--output-type', type=click.Choice(['json', 'javascript', 'bson', 'png']), default='json', help='Send output in the specified format (default is json to standard output)')
+@click.option('--output-type', type=click.Choice(['json', 'bson', 'png', 'javascript']), default='json', help='Send output in the specified format (default is json to standard output)')
 def pascal_fun(height, sparse, modulus, background_argb_hex_color, output_path, output_type):
     """This script generates Pascal's triangle as variants of Simple Image Format or other graphic formats."""
     PascalFun.run(height=height, modulus=modulus, background_argb_hex_color=background_argb_hex_color, sparse=sparse, output_path=output_path, output_type=output_type)
